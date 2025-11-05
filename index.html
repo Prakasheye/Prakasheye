@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEGEND - Advanced Loan Calculator & Financial Analytics</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-symbol">◆</span>
+                    <span class="logo-text">LEGEND</span>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-tab="calculator">Calculator</button>
+                    <button class="nav-btn" data-tab="analytics">Analytics</button>
+                    <button class="nav-btn" data-tab="metals">Precious Metals</button>
+                    <button class="nav-btn" data-tab="history">History</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Calculator Tab -->
+            <section id="calculator-tab" class="tab-section active">
+                <div class="calculator-grid">
+                    <!-- Loan Configuration Panel -->
+                    <div class="config-panel">
+                        <h2>Loan Configuration</h2>
+                        
+                        <div class="config-group">
+                            <label>Principal Amount</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">INR</span>
+                                <input type="number" id="principalInput" min="1000" max="10000000" step="1000" value="100000" class="config-input">
+                            </div>
+                            <input type="range" id="principalSlider" min="1000" max="10000000" step="1000" value="100000" class="slider">
+                            <div class="range-labels">
+                                <span>INR1K</span>
+                                <span>INR10M</span>
+                            </div>
+                        </div>
+
+                        <div class="config-group">
+                            <label>Interest Rate</label>
+                            <div class="rate-presets">
+                                <button class="rate-btn" data-rate="3.5">3.5%</button>
+                                <button class="rate-btn" data-rate="5.5">5.5%</button>
+                                <button class="rate-btn" data-rate="7.5">7.5%</button>
+                                <button class="rate-btn active" data-rate="9.5">9.5%</button>
+                            </div>
+                            <div class="input-wrapper">
+                                <input type="number" id="interestInput" min="0.1" max="25" step="0.1" value="9.5" class="config-input">
+                                <span class="unit">%</span>
+                            </div>
+                            <input type="range" id="interestSlider" min="0.1" max="25" step="0.1" value="9.5" class="slider">
+                        </div>
+
+                        <div class="config-group">
+                            <label>Loan Term</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="termInput" min="1" max="40" step="1" value="20" class="config-input">
+                                <span class="unit">years</span>
+                            </div>
+                            <input type="range" id="termSlider" min="1" max="40" step="1" value="20" class="slider">
+                            <div class="range-labels">
+                                <span>1 year</span>
+                                <span>40 years</span>
+                            </div>
+                        </div>
+
+                        <div class="config-group">
+                            <label>Payment Frequency</label>
+                            <div class="frequency-buttons">
+                                <button class="freq-btn active" data-freq="12">Monthly</button>
+                                <button class="freq-btn" data-freq="4">Quarterly</button>
+                                <button class="freq-btn" data-freq="2">Semi-Annual</button>
+                                <button class="freq-btn" data-freq="1">Annual</button>
+                            </div>
+                        </div>
+
+                        <div class="config-group">
+                            <label>Additional Setup Fee</label>
+                            <div class="input-wrapper">
+                                <span class="currency-symbol">INR</span>
+                                <input type="number" id="feeInput" min="0" max="50000" step="100" value="2500" class="config-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Panel -->
+                    <div class="results-panel">
+                        <h2>Loan Analysis</h2>
+                        
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-label">Monthly Payment</div>
+                                <div class="result-value" id="monthlyPayment">INR599.55</div>
+                                <div class="result-subtext">Excl. taxes & insurance</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Total Interest</div>
+                                <div class="result-value" id="totalInterest">INR143,892.00</div>
+                                <div class="result-subtext">Over loan term</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Total Amount Payable</div>
+                                <div class="result-value" id="totalPayable">INR246,392.00</div>
+                                <div class="result-subtext">Principal + Interest + Fees</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Interest Rate Effective</div>
+                                <div class="result-value" id="effectiveRate">9.87%</div>
+                                <div class="result-subtext">Includes fees amortization</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Total Payments</div>
+                                <div class="result-value" id="totalPayments">240</div>
+                                <div class="result-subtext">Over loan term</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-label">Loan-to-Value</div>
+                                <div class="result-value" id="ltv">100%</div>
+                                <div class="result-subtext">Assumed property value</div>
+                            </div>
+                        </div>
+
+                        <div class="amortization-preview">
+                            <h3>First 12 Months Preview</h3>
+                            <table class="amortization-table">
+                                <thead>
+                                    <tr>
+                                        <th>Payment #</th>
+                                        <th>Payment</th>
+                                        <th>Principal</th>
+                                        <th>Interest</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="amortizationBody">
+                                    <!-- Generated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Tab -->
+            <section id="analytics-tab" class="tab-section">
+                <div class="analytics-container">
+                    <div class="chart-container">
+                        <h3>Payment Breakdown Over Time</h3>
+                        <canvas id="paymentChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Principal vs Interest Distribution</h3>
+                        <canvas id="piChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Loan Balance Amortization</h3>
+                        <canvas id="balanceChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Annual Summary</h3>
+                        <canvas id="annualChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Precious Metals Tab -->
+            <section id="metals-tab" class="tab-section">
+                        <div class="metals-container">
+                    <div class="metals-header">
+                        <h2>Real-Time Precious Metals Pricing</h2>
+                        <div class="metals-refresh">
+                            <button id="refreshMetals" class="refresh-btn">↻ Refresh</button>
+                            <span class="last-updated">Last updated: <span id="metalTime">--:--</span></span>
+                        </div>
+                    </div>
+
+                    <div class="metals-grid">
+                        <div class="metal-card gold">
+                            <div class="metal-icon">🥇</div>
+                            <div class="metal-name">Gold</div>
+                            <div class="metal-price" id="goldPrice">INR2,150.00</div>
+                            <div class="metal-unit">per gram</div>
+                            <div class="metal-change" id="goldChange">↑ +1.25%</div>
+                            <canvas id="goldChart" class="metal-sparkline"></canvas>
+                        </div>
+
+                        <div class="metal-card silver">
+                            <div class="metal-icon">🥈</div>
+                            <div class="metal-name">Silver</div>
+                            <div class="metal-price" id="silverPrice">INR28.50</div>
+                            <div class="metal-unit">per gram</div>
+                            <div class="metal-change" id="silverChange">↑ +0.89%</div>
+                            <canvas id="silverChart" class="metal-sparkline"></canvas>
+                        </div>
+
+                        <div class="metal-card platinum">
+                            <div class="metal-icon">⚪</div>
+                            <div class="metal-name">Platinum</div>
+                            <div class="metal-price" id="platinumPrice">INR1,045.00</div>
+                            <div class="metal-unit">per gram</div>
+                            <div class="metal-change" id="platinumChange">↓ -0.45%</div>
+                            <canvas id="platinumChart" class="metal-sparkline"></canvas>
+                        </div>
+
+                        <div class="metal-card palladium">
+                            <div class="metal-icon">◆</div>
+                            <div class="metal-name">Palladium</div>
+                            <div class="metal-price" id="palladiumPrice">INR1,180.00</div>
+                            <div class="metal-unit">per gram</div>
+                            <div class="metal-change" id="palladiumChange">↑ +2.15%</div>
+                            <canvas id="palladiumChart" class="metal-sparkline"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="metals-conversion">
+                        <h3>Metals Converter</h3>
+                        <div class="conversion-grid">
+                            <div class="conversion-item">
+                                <label>Gold (g)</label>
+                                    <input type="number" id="goldAmount" value="1" min="0" step="0.01" class="conversion-input">
+                                    <div class="conversion-result" id="goldResult">INR0.00</div>
+                            </div>
+                            <div class="conversion-item">
+                                <label>Silver (g)</label>
+                                    <input type="number" id="silverAmount" value="1" min="0" step="0.01" class="conversion-input">
+                                    <div class="conversion-result" id="silverResult">INR0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Tab -->
+            <section id="history-tab" class="tab-section">
+                <div class="history-container">
+                    <h2>Historical Loan Scenarios</h2>
+                    
+                    <div class="history-search">
+                        <input type="text" id="searchInput" placeholder="Search historical scenarios..." class="search-input">
+                        <button id="searchBtn" class="search-btn">Search</button>
+                        <button id="clearHistory" class="clear-btn">Clear All</button>
+                    </div>
+
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Principal</th>
+                                <th>Rate</th>
+                                <th>Term</th>
+                                <th>Monthly Payment</th>
+                                <th>Total Interest</th>
+                                <th>Total Payable</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <tr class="empty-state">
+                                <td colspan="8">No calculation history yet. Your calculations will appear here.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 LEGEND Financial Analytics. Professional loan calculations for sophisticated investors.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
