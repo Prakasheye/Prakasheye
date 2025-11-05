@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "echo \"No dev server configured. Open index.html in a browser for local preview.\"",
+    "build": "echo \"No build necessary for static HTML site\"",
+    "start": "echo \"Open index.html in a browser or install a static server (e.g. npm i -g serve)\"",
     "lint": "eslint ."
   },
   "dependencies": {
