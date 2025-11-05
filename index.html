@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEGEND - Advanced Loan Calculator & Financial Analytics</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -293,6 +292,21 @@
         </footer>
     </div>
 
+    <script>
+        // Global error handler
+        window.onerror = function(msg, url, line) {
+            console.error(`Error: ${msg}\nFile: ${url}\nLine: ${line}`);
+        };
+    </script>
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Verify initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!window.loanCalc) {
+                console.error('LoanCalculator not initialized');
+            }
+        });
+    </script>
 </body>
 </html>

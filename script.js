@@ -4,17 +4,35 @@
 
 class LoanCalculator {
     constructor() {
-        this.principal = 100000;
-        this.rate = 9.5;
-        this.term = 20; // in years
-        this.frequency = 12; // monthly
-        this.fee = 2500;
-        this.history = this.loadHistory();
-        
-        this.initializeEventListeners();
-        this.calculateLoan();
-        this.loadMetalsData();
-        this.initializeCharts();
+        try {
+            console.log('Initializing LoanCalculator...');
+            this.principal = 100000;
+            this.rate = 9.5;
+            this.term = 20; // in years
+            this.frequency = 12; // monthly
+            this.fee = 2500;
+            this.history = this.loadHistory();
+            
+            // Initialize properties first
+            this.charts = {};
+            this.sparklineCharts = {};
+            this.amortizationData = [];
+            this.metalsHistory = {};
+
+            // Wait for Chart.js to be available
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js not loaded yet');
+                return;
+            }
+
+            this.initializeEventListeners();
+            this.calculateLoan();
+            this.loadMetalsData();
+            this.initializeCharts();
+            console.log('LoanCalculator initialized successfully');
+        } catch (error) {
+            console.error('Error initializing LoanCalculator:', error);
+        }
     }
 
     // ============================================
@@ -22,6 +40,24 @@ class LoanCalculator {
     // ============================================
 
     initializeEventListeners() {
+        console.log('Initializing event listeners...');
+        
+        // Verify DOM elements exist
+        const requiredElements = [
+            'principalInput', 'principalSlider',
+            'interestInput', 'interestSlider',
+            'termInput', 'termSlider',
+            'feeInput',
+            'monthlyPayment', 'totalInterest', 'totalPayable',
+            'effectiveRate', 'totalPayments'
+        ];
+        
+        const missingElements = requiredElements.filter(id => !document.getElementById(id));
+        if (missingElements.length > 0) {
+            console.error('Missing DOM elements:', missingElements);
+            throw new Error('Required DOM elements not found');
+        }
+
         // Calculator inputs
         const inputs = [
             { id: 'principalInput', sliderId: 'principalSlider' },
@@ -743,9 +779,23 @@ class LoanCalculator {
 
 let loanCalc;
 
-document.addEventListener('DOMContentLoaded', () => {
-    loanCalc = new LoanCalculator();
-});
+function initializeApp() {
+    try {
+        console.log('Starting app initialization...');
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js not loaded, retrying in 100ms...');
+            setTimeout(initializeApp, 100);
+            return;
+        }
+        loanCalc = new LoanCalculator();
+        window.loanCalc = loanCalc; // Make it globally available
+        console.log('App initialization complete');
+    } catch (error) {
+        console.error('Error during app initialization:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initializeApp);
 
 // Prevent negative values
 document.addEventListener('change', (e) => {
